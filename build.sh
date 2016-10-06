@@ -14,7 +14,7 @@
 ## Parameters
 ## --------------------
 
-VERSION=1.0.2h
+VERSION=1.0.2j
 
 # These values are used to avoid version detection
 FAKE_NIBBLE=0x102031af
@@ -34,7 +34,7 @@ LOG_DIR="$WORK_DIR"
 
 OPENSSL_NAME="openssl-$VERSION"
 OPENSSL_FILE="$OPENSSL_NAME.tar.gz"
-OPENSSL_URL="http://www.openssl.org/source/$OPENSSL_FILE"
+OPENSSL_URL="https://www.openssl.org/source/$OPENSSL_FILE"
 OPENSSL_PATH="$FILES_DIR/$OPENSSL_FILE"
 
 ## --------------------
