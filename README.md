@@ -16,13 +16,7 @@ The OpenSSL-LET CocoaPod provides the OpenSSL universal static libraries for iOS
 **How to install ?**
 
 ```
-pod 'OpenSSL-LET', '1.0.2d'
-```
-
-Or to get the latest version:
-
-```
-pod 'OpenSSL-LET', :git => 'https://github.com/letiemble/OpenSSL-LET.git', :branch => :master
+pod 'OpenSSL-LET', :git => 'https://github.com/letiemble/OpenSSL-LET.git', :tag => '1.1.0b'
 ```
 
 **Authors**
