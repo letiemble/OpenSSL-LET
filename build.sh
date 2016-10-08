@@ -14,9 +14,10 @@
 ## Parameters
 ## --------------------
 
-VERSION=1.0.2j
+VERSION=1.1.0a
 
 # These values are used to avoid version detection
+VERSION_HEADER="include/openssl/opensslv.h"
 FAKE_NIBBLE=0x102031af
 FAKE_TEXT="OpenSSL 0.9.8y 5 Feb 2013"
 
@@ -31,6 +32,7 @@ WORK_DIR="$BASE_DIR/work"
 BUILD_DIR="$WORK_DIR/build"
 FILES_DIR="$WORK_DIR/files"
 LOG_DIR="$WORK_DIR"
+DST_DIR="$BASE_DIR"
 
 OPENSSL_NAME="openssl-$VERSION"
 OPENSSL_FILE="$OPENSSL_NAME.tar.gz"
@@ -53,7 +55,7 @@ _configure() {
 	# Configure
 	if [ "x$DONT_CONFIGURE" == "x" ]; then
 		echo "Configuring $PLATFORM-$ARCH..."
-		(cd "$SRC_DIR"; CROSS_TOP="$CROSS_TOP" CROSS_SDK="$CROSS_SDK" CC="$CC" ./Configure --prefix="$DST_DIR" -no-apps "$COMPILER" > "$LOG_FILE" 2>&1)
+		(cd "$SRC_DIR"; CROSS_TOP="$CROSS_TOP" CROSS_SDK="$CROSS_SDK" CC="$CC" ./Configure --prefix="$DST_DIR" "$COMPILER" $1 $2 $3 $4 > "$LOG_FILE" 2>&1)
 	fi
 }
 
@@ -88,14 +90,13 @@ build_osx() {
 		CC="$DEVELOPER_DIR/usr/bin/gcc -arch $ARCH"
 
 		_unarchive
-		_configure
 
-		# Patch Makefile
-		sed -ie "s/^CFLAG= -/CFLAG=  -mmacosx-version-min=$MIN_OSX -/" "$SRC_DIR/Makefile"
+		# Custom configuration
+		_configure -mmacosx-version-min=$MIN_OSX
 
 		# Patch versions
-		sed -ie "s/^# define OPENSSL_VERSION_NUMBER.*$/# define OPENSSL_VERSION_NUMBER  $FAKE_NIBBLE/" "$SRC_DIR/crypto/opensslv.h"
-		sed -ie "s/^#  define OPENSSL_VERSION_TEXT.*$/#  define OPENSSL_VERSION_TEXT  \"$FAKE_TEXT\"/" "$SRC_DIR/crypto/opensslv.h"
+		sed -ie "s/^# define OPENSSL_VERSION_NUMBER.*$/# define OPENSSL_VERSION_NUMBER  $FAKE_NIBBLE/" "$SRC_DIR/$VERSION_HEADER"
+		sed -ie "s/^#  define OPENSSL_VERSION_TEXT.*$/#  define OPENSSL_VERSION_TEXT  \"$FAKE_TEXT\"/" "$SRC_DIR/$VERSION_HEADER"
 
 		_build
 	done
@@ -128,18 +129,17 @@ build_ios() {
 		CC="clang -arch $ARCH -fembed-bitcode"
 
 		_unarchive
-		_configure
 
-		# Patch Makefile
+		# Custom configuration
 		if [ "$ARCH" == "x86_64" ]; then
-			sed -ie "s/^CFLAG= -/CFLAG=  -miphoneos-version-min=$MIN_IOS -DOPENSSL_NO_ASM -/" "$SRC_DIR/Makefile"
+			_configure -miphoneos-version-min=$MIN_IOS -DOPENSSL_NO_ASM
     	else
-			sed -ie "s/^CFLAG= -/CFLAG=  -miphoneos-version-min=$MIN_IOS -/" "$SRC_DIR/Makefile"
+			_configure -miphoneos-version-min=$MIN_IOS
         fi
 
 		# Patch versions
-		sed -ie "s/^# define OPENSSL_VERSION_NUMBER.*$/# define OPENSSL_VERSION_NUMBER  $FAKE_NIBBLE/" "$SRC_DIR/crypto/opensslv.h"
-		sed -ie "s/^#  define OPENSSL_VERSION_TEXT.*$/#  define OPENSSL_VERSION_TEXT  \"$FAKE_TEXT\"/" "$SRC_DIR/crypto/opensslv.h"
+		sed -ie "s/^# define OPENSSL_VERSION_NUMBER.*$/# define OPENSSL_VERSION_NUMBER  $FAKE_NIBBLE/" "$SRC_DIR/$VERSION_HEADER"
+		sed -ie "s/^#  define OPENSSL_VERSION_TEXT.*$/#  define OPENSSL_VERSION_TEXT  \"$FAKE_TEXT\"/" "$SRC_DIR/$VERSION_HEADER"
 
 		_build
 	done
