@@ -67,6 +67,21 @@ _build() {
 	fi
 }
 
+_package() {
+	INCLUDE_DIR="$BASE_DIR/include/$1"
+	LIB_DIR="$BASE_DIR/lib/$1"
+	ARCHIVE_DIR="$WORK_DIR/archive"
+	ARCHIVE="$BASE_DIR/openssl-$VERSION-$2.tar.gz"
+
+	rm -Rf "$ARCHIVE_DIR"
+	mkdir -p "$ARCHIVE_DIR"
+
+	cp -LR "$INCLUDE_DIR" "$ARCHIVE_DIR/include"
+	cp -LR "$LIB_DIR" "$ARCHIVE_DIR/lib"
+
+	(cd $ARCHIVE_DIR; tar -zcf "$ARCHIVE" .; cd -)
+}
+
 build_osx() {
 	ARCHS="i386 x86_64"
 	for ARCH in $ARCHS; do
@@ -188,6 +203,11 @@ distribute_ios() {
 	done
 }
 
+package() {
+	_package "ios" "iOS"
+	_package "osx" "MacOSX"
+}
+
 prepare() {
     # Create folders
     mkdir -p "$BUILD_DIR"
@@ -209,3 +229,5 @@ build_ios
 
 distribute_osx
 distribute_ios
+
+package
