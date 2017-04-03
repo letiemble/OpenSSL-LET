@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "OpenSSL-LET"
-  s.version      = "1.1.0c"
+  s.version      = "1.1.0d"
   s.summary      = "Universal OpenSSL for iOS and OS X"
   s.description  = "OpenSSL is an SSL/TLS and Crypto toolkit. This pod provides static fat libraries iOS (armv7,armv7s,arm64,i386,x86_64) and for OSX (i386,x86_64)."
   s.homepage     = "http://github.io/letiemble/OpenSSL-LET"
