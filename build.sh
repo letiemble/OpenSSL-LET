@@ -14,7 +14,7 @@
 ## Parameters
 ## --------------------
 
-VERSION=1.1.0i
+VERSION=1.1.0j
 
 # These values are used to avoid version detection
 VERSION_HEADER="include/openssl/opensslv.h"
@@ -210,6 +210,7 @@ package() {
 
 prepare() {
     # Create folders
+	rm -Rf "$BUILD_DIR"
     mkdir -p "$BUILD_DIR"
     mkdir -p "$FILES_DIR"
 }
