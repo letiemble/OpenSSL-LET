@@ -14,7 +14,7 @@
 ## Parameters
 ## --------------------
 
-VERSION=1.0.2o
+VERSION=1.0.2p
 
 # These values are used to avoid version detection
 FAKE_NIBBLE=0x102031af
@@ -210,6 +210,7 @@ package() {
 
 prepare() {
     # Create folders
+	rm -Rf "$BUILD_DIR"
     mkdir -p "$BUILD_DIR"
     mkdir -p "$FILES_DIR"
 }
