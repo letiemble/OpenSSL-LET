@@ -14,7 +14,7 @@
 ## Parameters
 ## --------------------
 
-VERSION=1.0.2q
+VERSION=1.0.2r
 
 # These values are used to avoid version detection
 FAKE_NIBBLE=0x102031af
