@@ -14,7 +14,7 @@
 ## Parameters
 ## --------------------
 
-VERSION=1.1.1a
+VERSION=1.1.1b
 
 # These values are used to avoid version detection
 VERSION_HEADER="include/openssl/opensslv.h"
